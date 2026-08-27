@@ -1,0 +1,22 @@
+{
+    "name": "movie-search",
+    "version": "1.0.0",
+    "description": "A movie search application built with Vanilla JavaScript and the OMDb API.",
+    "main": "script.js",
+    "scripts": {
+        "dev": "vite"
+    },
+    "keywords": [
+        "javascript",
+        "vanilla-js",
+        "movie-search",
+        "omdb-api",
+        "vite"
+    ],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "devDependencies": {
+        "vite": "^8.2.2"
+    }
+}
