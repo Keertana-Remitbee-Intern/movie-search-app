@@ -4,7 +4,9 @@
     "description": "A movie search application built with Vanilla JavaScript and the OMDb API.",
     "main": "script.js",
     "scripts": {
-        "dev": "vite"
+        "dev": "vite",
+        "build": "vite",
+        "preview": "vite preview"
     },
     "keywords": [
         "javascript",
