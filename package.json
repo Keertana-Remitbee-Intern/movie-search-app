@@ -1,7 +1,7 @@
 {
-    "name": "movie-search",
+    "name": "cinefind",
     "version": "1.0.0",
-    "description": "A movie search application built with Vanilla JavaScript and the OMDb API.",
+    "description": "A movie search application built with Vanilla JavaScript and the TMDB API.",
     "main": "script.js",
     "scripts": {
         "dev": "vite",
@@ -12,7 +12,7 @@
         "javascript",
         "vanilla-js",
         "movie-search",
-        "omdb-api",
+        "tmdb-api",
         "vite"
     ],
     "author": "",

@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Search App</title>
+    <title>CineFind - Movie Search</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
     <header>
 
-        <nav class="navbar">
+        <nav class="navbar" aria-label="Main navigation">
             <a href="index.html" class="logo">CineFind</a>
             <div class="nav-links">
                 <a href="index.html" class="active">Home</a>
@@ -22,8 +23,9 @@
         <div class="hero-content">
             <h1>Find Your Next Movie</h1>
             <p>
-                Search, discover, and find something worth watching.
+                Search thousands of movies and find something worth watching.
             </p>
+
             <section class="search-section">
                 <form id="searchForm">
                     <input
@@ -31,16 +33,20 @@
                         id="searchInput"
                         placeholder="Search for a movie..."
                         autocomplete="off"
+                        aria-label="Search for a movie"
                     >
-                    <button type="submit">Search</button>
+                    <button type="submit">
+                        Search
+                    </button>
                 </form>
                 <p id="inputMessage" class="message"></p>
             </section>
+
         </div>
     </header>
 
-
     <main>
+
         <section id="statusSection">
             <p id="loadingMessage" class="status hidden">
                 Loading movies...
@@ -59,13 +65,23 @@
                 id="movieContainer"
                 class="movie-container">
             </div>
-
             <div id="pagination" class="pagination hidden">
-                <button id="prevButton">Previous</button>
-                <span id="pageNumber">Page 1</span>
-                <button id="nextButton">Next</button>
+                <button
+                    id="prevButton"
+                    type="button">
+                    Previous
+                </button>
+                <span id="pageNumber">
+                    Page 1
+                </span>
+                <button
+                    id="nextButton"
+                    type="button">
+                    Next
+                </button>
             </div>
         </section>
+
     </main>
 
     <script type="module" src="script.js"></script>
