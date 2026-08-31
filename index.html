@@ -11,13 +11,8 @@
 <body>
 
     <header>
-
-        <nav class="navbar" aria-label="Main navigation">
-            <a href="index.html" class="logo">CineFind</a>
-            <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="#">Explore</a>
-            </div>
+        <nav class="navbar">
+            <a href="home" class="logo">CineFind</a>
         </nav>
 
         <div class="hero-content">
@@ -25,7 +20,6 @@
             <p>
                 Search thousands of movies and find something worth watching.
             </p>
-
             <section class="search-section">
                 <form id="searchForm">
                     <input
@@ -33,15 +27,20 @@
                         id="searchInput"
                         placeholder="Search for a movie..."
                         autocomplete="off"
-                        aria-label="Search for a movie"
                     >
-                    <button type="submit">
-                        Search
+                    <button type="submit">Search</button>
+
+                    <button
+                        type="button"
+                        id="clearButton"
+                        class="clear-button hidden"
+                    >
+                      Clear
                     </button>
                 </form>
+                
                 <p id="inputMessage" class="message"></p>
             </section>
-
         </div>
     </header>
 
@@ -57,31 +56,72 @@
             </p>
         </section>
 
-        <section class="results-section">
+        <section id="resultsSection" class="results-section">
             <h2 id="resultsTitle" class="results-title hidden">
                 Search Results
             </h2>
-            <div
-                id="movieContainer"
-                class="movie-container">
-            </div>
+            <div id="movieContainer" class="movie-container"></div>
             <div id="pagination" class="pagination hidden">
-                <button
-                    id="prevButton"
-                    type="button">
+                <button id="prevButton" type="button">
                     Previous
                 </button>
                 <span id="pageNumber">
                     Page 1
                 </span>
-                <button
-                    id="nextButton"
-                    type="button">
+                <button id="nextButton" type="button">
                     Next
                 </button>
             </div>
         </section>
 
+        <section id="movieDetails" class="movie-details hidden">
+            <button id="backButton" type="button" class="back-button">
+                Back to Results
+            </button>
+     
+            <div class="details-container">
+                <div class="details-poster-container">
+                    <img
+                        id="detailsPoster"
+                        class="details-poster"
+                        alt="Movie poster"
+                    >
+                </div>
+
+                <div class="details-info">
+                    <h1 id="detailsTitle"></h1>
+                    <div class="details-meta">
+                        <span id="detailsYear"></span>
+                        <span id="detailsRuntime"></span>
+                        <span id="detailsRating"></span>
+                    </div>
+
+                    <p id="detailsGenre" class="details-genre"></p>
+                    <p id="detailsPlot" class="details-plot"></p>
+
+                    <div class="details-item">
+                        <strong>Director</strong>
+                        <span id="detailsDirector"></span>
+                    </div>
+
+                    <div class="details-item">
+                        <strong>Actors</strong>
+                        <span id="detailsActors"></span>
+                    </div>
+
+                    <div class="details-item">
+                        <strong>Released</strong>
+                        <span id="detailsReleased"></span>
+                    </div>
+
+                    <div class="details-item">
+                        <strong>Language</strong>
+                        <span id="detailsLanguage"></span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
     </main>
 
     <script type="module" src="script.js"></script>
