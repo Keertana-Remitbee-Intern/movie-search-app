@@ -11,6 +11,8 @@ body {
     min-height: 100vh;
 }
 
+/* Header */
+
 header {
     position: relative;
     min-height: 360px;
@@ -26,6 +28,8 @@ header {
     background-position: center;
 }
 
+/* Navigation */
+
 .navbar {
     position: absolute;
     top: 0;
@@ -33,6 +37,8 @@ header {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 25px;
     padding: 24px 5%;
 }
 
@@ -42,6 +48,8 @@ header {
     font-size: 35px;
     font-weight: 700;
 }
+
+/* Hero */
 
 .hero-content {
     position: absolute;
@@ -63,6 +71,8 @@ header {
     font-size: 16px;
     margin-bottom: 25px;
 }
+
+/* Search */
 
 .search-section {
     display: flex;
@@ -96,6 +106,8 @@ header {
     color: #777777;
 }
 
+/* Buttons */
+
 button {
     padding: 12px 22px;
     font-size: 14px;
@@ -115,6 +127,28 @@ button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
+
+.clear-button {
+    background: #333333;
+    color: #ffffff;
+}
+
+.clear-button:hover {
+    background: #444444;
+}
+
+.back-button {
+    padding: 10px 18px;
+    color: #ffffff;
+    background: #242424;
+    border: 1px solid #3a3a3a;
+}
+
+.back-button:hover {
+    background: #303030;
+}
+
+/* Messages */
 
 .message {
     margin-top: 10px;
@@ -136,40 +170,37 @@ button:disabled {
     display: none !important;
 }
 
+/* Main */
+
 main {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto 70px;
 }
 
-.results-section {
-    margin-top: 45px;
-}
+/* Search Results */
 
 .results-title {
-    font-size: 23px;
+    font-size: 20px;
     margin-bottom: 22px;
 }
 
-.clear-button {
-    background: #333333;
-    color: #ffffff;
-}
+/* Movie Grid */
 
-.clear-button:hover {
-    background: #444444;
-}
 .movie-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 24px;
 }
+
+/* Movie Card */
 
 .movie-card {
     background: #1b1b1b;
     border: 1px solid #2b2b2b;
     border-radius: 8px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .movie-card:hover {
@@ -177,9 +208,11 @@ main {
     border-color: #555555;
 }
 
+/* Movie Poster */
+
 .movie-poster-container {
     width: 100%;
-    height: 285px;
+    height: 270px;
     background: #242424;
     overflow: hidden;
 }
@@ -190,6 +223,8 @@ main {
     display: block;
     object-fit: cover;
 }
+
+/* Fallback Poster */
 
 .fallback-poster {
     width: 100%;
@@ -215,33 +250,46 @@ main {
     text-transform: uppercase;
 }
 
+/* Movie Information */
+
 .movie-info {
-    padding: 15px;
+    padding: 12px 15px;
 }
 
 .movie-title {
-    font-size: 17px;
-    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 1.2;
+    margin-bottom: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+/* Movie Meta */
+
+.movie-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
 .movie-year {
     font-size: 13px;
     color: #999999;
-    margin-bottom: 9px;
 }
 
 .movie-type {
-    display: inline-block;
     padding: 4px 8px;
     font-size: 11px;
     color: #e0b653;
     background: rgba(224, 182, 83, 0.08);
     border: 1px solid rgba(224, 182, 83, 0.22);
     border-radius: 4px;
+    white-space: nowrap;
 }
+
+/* Loading */
 
 #loadingMessage::before {
     content: "";
@@ -261,6 +309,8 @@ main {
     }
 }
 
+/* Pagination */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -278,21 +328,11 @@ main {
     font-size: 14px;
 }
 
+/* Movie Details */
+
 .movie-details {
     margin-top: 50px;
     padding-bottom: 50px;
-}
-
-.back-button {
-    margin-bottom: 30px;
-    padding: 10px 18px;
-    color: #ffffff;
-    background: #242424;
-    border: 1px solid #3a3a3a;
-}
-
-.back-button:hover {
-    background: #303030;
 }
 
 .details-container {
@@ -373,12 +413,14 @@ main {
     line-height: 1.5;
 }
 
--mode {
+/* Details Header */
+
+.details-mode {
     min-height: 100px;
     background: #111111;
 }
 
--mode .hero-content {
+.details-mode .hero-content {
     display: none;
 }
 
@@ -395,7 +437,104 @@ header.details-mode .hero-content {
     display: none;
 }
 
+/* Explore */
+
+.explore-section {
+    margin-top: 30px;
+}
+
+.explore-section > h2 {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+
+.explore-section > h3 {
+    font-size: 20px;
+    line-height: 1.2;
+    margin-bottom: 18px;
+}
+
+.explore-section .movie-container {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 12px;
+    margin-bottom: 38px;
+    scroll-behavior: smooth;
+}
+
+.explore-section .movie-card {
+    flex: 0 0 210px;
+    background: #1b1b1b;
+    border: 1px solid #2b2b2b;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.explore-section .movie-poster-container {
+    width: 100%;
+    height: 270px;
+}
+
+.explore-section .movie-info {
+    padding: 12px 15px;
+}
+
+.explore-section .movie-title {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 10px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.explore-section .movie-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.explore-section .movie-year {
+    font-size: 13px !important;
+    color: #999999;
+}
+
+.explore-section .movie-type {
+    padding: 4px 8px;
+    font-size: 11px !important;
+    color: #e0b653;
+    background: rgba(224, 182, 83, 0.08);
+    border: 1px solid rgba(224, 182, 83, 0.22);
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.explore-section .movie-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.explore-section .movie-container::-webkit-scrollbar-track {
+    background: #1b1b1b;
+    border-radius: 10px;
+}
+
+.explore-section .movie-container::-webkit-scrollbar-thumb {
+    background: #444444;
+    border-radius: 10px;
+}
+
+.explore-section .movie-container::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+}
+/* Mobile */
+
 @media (max-width: 700px) {
+
     header {
         min-height: 380px;
     }
@@ -434,7 +573,7 @@ header.details-mode .hero-content {
     }
 
     .movie-poster-container {
-        height: 240px;
+        height: 230px;
     }
 
     .movie-info {
@@ -461,7 +600,10 @@ header.details-mode .hero-content {
     }
 }
 
+/* Small Mobile */
+
 @media (max-width: 420px) {
+
     .logo {
         font-size: 24px;
     }
@@ -500,5 +642,3 @@ header.details-mode .hero-content {
         width: auto;
     }
 }
-
-

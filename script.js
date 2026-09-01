@@ -5,6 +5,7 @@ const API_URL = "https://api.themoviedb.org/3";
 
 let currentPage = 1;
 let totalResults = 0;
+let detailsSource = "search";
 
 // Select HTML Elements
 
@@ -39,334 +40,368 @@ const detailsActors = document.getElementById("detailsActors");
 const detailsReleased = document.getElementById("detailsReleased");
 const detailsLanguage = document.getElementById("detailsLanguage");
 const header = document.querySelector("header");
+const exploreSection = document.getElementById("exploreSection");
+const popularContainer = document.getElementById("popularContainer");
+const topRatedContainer = document.getElementById("topRatedContainer");
 
 // Search Event
 
 searchForm.addEventListener("submit", function (event) {
     event.preventDefault();
+
     const searchTerm = searchInput.value.trim();
 
-    // Check if input is empty
     if (searchTerm === "") {
         inputMessage.textContent = "Please enter a movie name.";
         movieContainer.innerHTML = "";
         resultsTitle.classList.add("hidden");
         pagination.classList.add("hidden");
+        exploreSection.classList.remove("hidden");
         return;
     }
+
     inputMessage.textContent = "";
     currentPage = 1;
     clearButton.classList.remove("hidden");
+
+    exploreSection.classList.add("hidden");
+
     hideMovieDetails();
     searchMovies(searchTerm);
 });
+
+// Clear Search
 
 clearButton.addEventListener("click", function () {
     searchInput.value = "";
     movieContainer.innerHTML = "";
     currentPage = 1;
     totalResults = 0;
+
     resultsTitle.classList.add("hidden");
     pagination.classList.add("hidden");
     inputMessage.textContent = "";
+
     hideMessage(errorMessage);
     hideMessage(noResultsMessage);
     hideMessage(loadingMessage);
+
     clearButton.classList.add("hidden");
+
+    exploreSection.classList.remove("hidden");
 });
 
 // Fetch Movies
 
 async function searchMovies(searchTerm) {
     try {
-
-        // Clear previous results
         movieContainer.innerHTML = "";
 
-        // Reset messages
         hideMessage(errorMessage);
         hideMessage(noResultsMessage);
         hideMessage(resultsTitle);
+
         pagination.classList.add("hidden");
 
-        // Show loading
         showMessage(loadingMessage);
 
-        // Create API URL
         const url =
             `${API_URL}/search/movie?api_key=${API_KEY}` +
             `&query=${encodeURIComponent(searchTerm)}` +
             `&page=${currentPage}`;
 
-        // Fetch data
         const response = await fetch(url);
 
-        // Check HTTP response
         if (!response.ok) {
             throw new Error("Failed to fetch movie data.");
         }
 
-        // Convert response to JSON
         const data = await response.json();
-        console.log("TMDB SEARCH RESPONSE:", data);
 
-        // Store total results
         totalResults = data.total_results;
 
-        // Hide loading
         hideMessage(loadingMessage);
 
-        // Check API response
         if (!data.results || data.results.length === 0) {
             showMessage(noResultsMessage);
             pagination.classList.add("hidden");
             return;
         }
 
-        // Show results title
         resultsTitle.textContent =
             `Search Results for "${searchTerm}"`;
 
         showMessage(resultsTitle);
 
-        // Display movies
         displayMovies(data.results);
 
-        // Update pagination
         updatePagination();
-    }
 
-    catch (error) {
+    } catch (error) {
         hideMessage(loadingMessage);
+
         pagination.classList.add("hidden");
+
         errorMessage.textContent =
             "Something went wrong. Please try again.";
+
         showMessage(errorMessage);
+
         console.error("Error:", error);
     }
 }
 
-// Display Movies
+// Display Search Movies
 
 function displayMovies(movies) {
     movieContainer.innerHTML = "";
+
     movies.forEach(function (movie) {
 
-        // Create movie card
-        const movieCard =
-            document.createElement("div");
+        const movieCard = document.createElement("div");
+
         movieCard.classList.add("movie-card");
 
-        // Make card clickable
         movieCard.addEventListener("click", function () {
+            detailsSource = "search";
             getMovieDetails(movie.id);
         });
 
-       // Create poster container
         const posterContainer =
             document.createElement("div");
+
         posterContainer.classList.add(
             "movie-poster-container"
         );
 
-        // Create poster
-        const poster =
-            document.createElement("img");
-        poster.classList.add("movie-poster");
-        poster.alt =
-            `${movie.title} poster`;
+        const poster = document.createElement("img");
 
-        // Check if poster exists
+        poster.classList.add("movie-poster");
+
+        poster.alt = `${movie.title} poster`;
+
         if (movie.poster_path) {
+
             poster.src =
                 `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
             posterContainer.appendChild(poster);
 
-            // Handle broken poster URL
             poster.onerror = function () {
                 poster.style.display = "none";
-                showFallbackPoster(
-                    posterContainer
-                );
+                showFallbackPoster(posterContainer);
             };
-        }
-        else {
-            showFallbackPoster(
-                posterContainer
-            );
+
+        } else {
+            showFallbackPoster(posterContainer);
         }
 
-        // Create movie information container
-        const movieInfo =
-            document.createElement("div");
+        const movieInfo = document.createElement("div");
+
         movieInfo.classList.add("movie-info");
 
-        // Create title
-        const title =
-            document.createElement("h2");
-        title.classList.add("movie-title");
-        title.textContent =
-            movie.title;
+        const title = document.createElement("h2");
 
-        // Create year
-        const year =
-            document.createElement("p");
+        title.classList.add("movie-title");
+
+        title.textContent = movie.title;
+
+        const year = document.createElement("p");
+
         year.classList.add("movie-year");
 
         if (movie.release_date) {
             year.textContent =
                 `Year: ${movie.release_date.substring(0, 4)}`;
-        }
-        else {
-            year.textContent =
-                "Year: N/A";
+        } else {
+            year.textContent = "Year: N/A";
         }
 
-        // Create type
-        const type =
-            document.createElement("p");
+        const type = document.createElement("p");
+
         type.classList.add("movie-type");
-        type.textContent =
-            "Type: Movie";
 
-        // Add information to movie info
+        type.textContent = "Type: Movie";
+
+        const movieMeta = document.createElement("div");
+
+        movieMeta.classList.add("movie-meta");
+
+        movieMeta.appendChild(year);
+        movieMeta.appendChild(type);
+
         movieInfo.appendChild(title);
-        movieInfo.appendChild(year);
-        movieInfo.appendChild(type);
+        movieInfo.appendChild(movieMeta);
 
-        // Add poster and information to card
-        movieCard.appendChild(
-            posterContainer
-        );
-        movieCard.appendChild(
-            movieInfo
-        );
+        movieCard.appendChild(posterContainer);
+        movieCard.appendChild(movieInfo);
 
-        // Add card to container
-        movieContainer.appendChild(
-            movieCard
-        );
+        movieContainer.appendChild(movieCard);
     });
 }
 
 // Fetch Movie Details
 
 async function getMovieDetails(movieId) {
+
     try {
+
         resultsSection.classList.add("hidden");
         pagination.classList.add("hidden");
+        exploreSection.classList.add("hidden");
+
         header.classList.add("details-mode");
+
         showMessage(loadingMessage);
 
-        const movieUrl = `${API_URL}/movie/${movieId}?api_key=${API_KEY}`;
-        const creditsUrl = `${API_URL}/movie/${movieId}/credits?api_key=${API_KEY}`;
+        const movieUrl =
+            `${API_URL}/movie/${movieId}?api_key=${API_KEY}`;
+
+        const creditsUrl =
+            `${API_URL}/movie/${movieId}/credits?api_key=${API_KEY}`;
+
         const movieResponse = await fetch(movieUrl);
         const creditsResponse = await fetch(creditsUrl);
 
         if (!movieResponse.ok || !creditsResponse.ok) {
             throw new Error("Failed to fetch movie details.");
         }
+
         const movie = await movieResponse.json();
         const credits = await creditsResponse.json();
+
         hideMessage(loadingMessage);
+
         displayMovieDetails(movie, credits);
-    }
-    catch (error) {
+
+    } catch (error) {
+
         hideMessage(loadingMessage);
+
         resultsSection.classList.remove("hidden");
+
         errorMessage.textContent =
             "Unable to load movie details.";
+
         showMessage(errorMessage);
+
         console.error(error);
     }
 }
 
+// Load Explore Movies
+
+async function loadExploreMovies() {
+
+    try {
+
+        const popularUrl =
+            `${API_URL}/movie/popular?api_key=${API_KEY}`;
+
+        const topRatedUrl =
+            `${API_URL}/movie/top_rated?api_key=${API_KEY}`;
+
+        const popularResponse = await fetch(popularUrl);
+        const topRatedResponse = await fetch(topRatedUrl);
+
+        const popularData = await popularResponse.json();
+        const topRatedData = await topRatedResponse.json();
+
+        displayExploreMovies(
+            popularData.results,
+            popularContainer
+        );
+
+        displayExploreMovies(
+            topRatedData.results,
+            topRatedContainer
+        );
+
+    } catch (error) {
+
+        console.error("Explore Error:", error);
+    }
+}
+
 // Display Movie Details
+
 function displayMovieDetails(movie, credits) {
 
-    // Movie title
     detailsTitle.textContent =
         movie.title || "Unknown Title";
 
-    // Poster
     if (movie.poster_path) {
+
         detailsPoster.src =
             `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-        detailsPoster.style.display =
-            "block";
+
+        detailsPoster.style.display = "block";
+
+    } else {
+
+        detailsPoster.removeAttribute("src");
+        detailsPoster.style.display = "none";
     }
-    else {
-        detailsPoster.removeAttribute(
-            "src"
-        );
-        detailsPoster.style.display =
-            "none";
-    }
+
     detailsPoster.alt =
         `${movie.title} poster`;
 
-    // Year
     if (movie.release_date) {
+
         detailsYear.textContent =
             movie.release_date.substring(0, 4);
-    }
-    else {
-        detailsYear.textContent =
-            "Year N/A";
-    }
 
-    // Runtime
+    } else {
+
+        detailsYear.textContent = "Year N/A";
+    }
 
     if (movie.runtime) {
+
         detailsRuntime.textContent =
             `${movie.runtime} min`;
-    }
-    else {
-        detailsRuntime.textContent =
-            "Runtime N/A";
-    }
 
-    // Rating
+    } else {
+
+        detailsRuntime.textContent = "Runtime N/A";
+    }
 
     if (movie.vote_average) {
+
         detailsRating.textContent =
             `★ ${movie.vote_average.toFixed(1)}`;
-    }
-    else {
-        detailsRating.textContent =
-            "Rating N/A";
+
+    } else {
+
+        detailsRating.textContent = "Rating N/A";
     }
 
-    // Genre
-    if (
-        movie.genres &&
-        movie.genres.length > 0
-    ) {
+    if (movie.genres && movie.genres.length > 0) {
+
         detailsGenre.textContent =
             movie.genres
                 .map(function (genre) {
                     return genre.name;
                 })
                 .join(" • ");
-    }
-    else {
-        detailsGenre.textContent =
-            "Genre N/A";
+
+    } else {
+
+        detailsGenre.textContent = "Genre N/A";
     }
 
-    // Plot / Overview
     detailsPlot.textContent =
         movie.overview ||
         "No plot information available.";
 
-    // Director
-    const director = credits.crew.find(function (person) {
-        return person.job === "Director";
-    });
+    const director =
+        credits.crew.find(function (person) {
+            return person.job === "Director";
+        });
+
     detailsDirector.textContent =
         director ? director.name : "Not available";
 
-    // Actors
     detailsActors.textContent =
         credits.cast
             .slice(0, 5)
@@ -375,38 +410,144 @@ function displayMovieDetails(movie, credits) {
             })
             .join(", ");
 
-    // Released
     detailsReleased.textContent =
         movie.release_date || "Not available";
-        
-    // Language
+
     detailsLanguage.textContent =
         movie.original_language
             ? movie.original_language.toUpperCase()
             : "Not available";
 
-    // Show details section
-    movieDetails.classList.remove(
-        "hidden"
-    );
+    movieDetails.classList.remove("hidden");
+
+    backButton.classList.remove("hidden");
 }
 
-// Back To Results
+// Display Explore Movies
 
-backButton.addEventListener(
-    "click",
-    function () {
-        hideMovieDetails();
+function displayExploreMovies(movies, container) {
+
+    container.innerHTML = "";
+
+    movies.slice(0, 10).forEach(function (movie) {
+
+        const movieCard = document.createElement("div");
+
+        movieCard.classList.add("movie-card");
+
+        movieCard.addEventListener("click", function () {
+            detailsSource = "explore";
+            getMovieDetails(movie.id);
+        });
+
+        const posterContainer =
+            document.createElement("div");
+
+        posterContainer.classList.add(
+            "movie-poster-container"
+        );
+
+        const poster = document.createElement("img");
+
+        poster.classList.add("movie-poster");
+
+        poster.src =
+            `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
+        poster.alt = `${movie.title} poster`;
+
+        posterContainer.appendChild(poster);
+
+        const movieInfo = document.createElement("div");
+
+        movieInfo.classList.add("movie-info");
+
+        const title = document.createElement("h2");
+
+        title.classList.add("movie-title");
+
+        title.textContent = movie.title;
+
+        const year = document.createElement("p");
+
+        year.classList.add("movie-year");
+
+        if (movie.release_date) {
+
+            year.textContent =
+                `Year: ${movie.release_date.substring(0, 4)}`;
+
+        } else {
+
+            year.textContent = "Year: N/A";
+        }
+
+        const type = document.createElement("p");
+
+        type.classList.add("movie-type");
+
+        type.textContent = "Type: Movie";
+
+        const movieMeta = document.createElement("div");
+
+        movieMeta.classList.add("movie-meta");
+
+        movieMeta.appendChild(year);
+        movieMeta.appendChild(type);
+
+        movieInfo.appendChild(title);
+        movieInfo.appendChild(movieMeta);
+
+        movieCard.appendChild(posterContainer);
+        movieCard.appendChild(movieInfo);
+
+        container.appendChild(movieCard);
+    });
+}
+
+// Back Button
+
+backButton.addEventListener("click", function () {
+
+    hideMovieDetails();
+
+    if (detailsSource === "explore") {
+
+        resultsSection.classList.add("hidden");
+
+        movieContainer.innerHTML = "";
+
+        resultsTitle.classList.add("hidden");
+        pagination.classList.add("hidden");
+
+        searchInput.value = "";
+
+        clearButton.classList.add("hidden");
+
+        currentPage = 1;
+        totalResults = 0;
+
+        exploreSection.classList.remove("hidden");
+
+    } else {
+
         resultsSection.classList.remove("hidden");
+
+        exploreSection.classList.add("hidden");
+
         resultsTitle.classList.remove("hidden");
         pagination.classList.remove("hidden");
     }
-);
+});
 
 // Hide Movie Details
 
 function hideMovieDetails() {
+
     movieDetails.classList.add("hidden");
+
+    backButton.classList.add("hidden");
+
     header.classList.remove("details-mode");
 }
 
@@ -414,59 +555,62 @@ function hideMovieDetails() {
 
 function updatePagination() {
 
-    // TMDB returns 20 results per page
     const totalPages =
         Math.min(
             Math.ceil(totalResults / 20),
             500
         );
+
     pageNumber.textContent =
         `Page ${currentPage} of ${totalPages}`;
+
     prevButton.disabled =
         currentPage === 1;
+
     nextButton.disabled =
         currentPage >= totalPages;
-    pagination.classList.remove(
-        "hidden"
-    );
+
+    pagination.classList.remove("hidden");
 }
 
 // Previous Page
 
-prevButton.addEventListener(
-    "click",
-    function () {
-        if (currentPage > 1) {
-            currentPage--;
-            searchMovies(
-                searchInput.value.trim()
-            );
-        }
+prevButton.addEventListener("click", function () {
+
+    if (currentPage > 1) {
+
+        currentPage--;
+
+        searchMovies(
+            searchInput.value.trim()
+        );
     }
-);
+});
 
 // Next Page
 
-nextButton.addEventListener(
-    "click",
-    function () {
-        const totalPages =
-            Math.min(
-                Math.ceil(totalResults / 20),
-                500
-            );
-        if (currentPage < totalPages) {
-            currentPage++;
-            searchMovies(
-                searchInput.value.trim()
-            );
-        }
+nextButton.addEventListener("click", function () {
+
+    const totalPages =
+        Math.min(
+            Math.ceil(totalResults / 20),
+            500
+        );
+
+    if (currentPage < totalPages) {
+
+        currentPage++;
+
+        searchMovies(
+            searchInput.value.trim()
+        );
     }
-);
+});
 
 // Create Fallback Poster
 
 function showFallbackPoster(container) {
+
     container.innerHTML = `
         <div class="fallback-poster">
             <span>CineFind</span>
@@ -478,15 +622,15 @@ function showFallbackPoster(container) {
 // Show Message
 
 function showMessage(element) {
-    element.classList.remove(
-        "hidden"
-    );
+    element.classList.remove("hidden");
 }
 
 // Hide Message
 
 function hideMessage(element) {
-    element.classList.add(
-        "hidden"
-    );
+    element.classList.add("hidden");
 }
+
+// Load Explore
+
+loadExploreMovies();

@@ -12,33 +12,44 @@
 
     <header>
         <nav class="navbar">
-            <a href="home" class="logo">CineFind</a>
+            <a href="index.html" class="logo">CineFind</a>
+
+            <button id="backButton" class="back-button hidden" type="button">
+                X
+            </button>
         </nav>
 
         <div class="hero-content">
             <h1>Find Your Next Movie</h1>
+
             <p>
                 Search thousands of movies and find something worth watching.
             </p>
+
             <section class="search-section">
                 <form id="searchForm">
+
                     <input
                         type="text"
                         id="searchInput"
                         placeholder="Search for a movie..."
                         autocomplete="off"
                     >
-                    <button type="submit">Search</button>
+
+                    <button type="submit">
+                        Search
+                    </button>
 
                     <button
                         type="button"
                         id="clearButton"
                         class="clear-button hidden"
                     >
-                      Clear
+                        Clear
                     </button>
+
                 </form>
-                
+
                 <p id="inputMessage" class="message"></p>
             </section>
         </div>
@@ -46,58 +57,108 @@
 
     <main>
 
+        <!-- Search Status -->
+
         <section id="statusSection">
+
             <p id="loadingMessage" class="status hidden">
                 Loading movies...
             </p>
+
             <p id="errorMessage" class="status error hidden"></p>
+
             <p id="noResultsMessage" class="status hidden">
                 No movies found. Try another search.
             </p>
+
         </section>
 
+
+        <!-- Search Results -->
+
         <section id="resultsSection" class="results-section">
+
             <h2 id="resultsTitle" class="results-title hidden">
                 Search Results
             </h2>
-            <div id="movieContainer" class="movie-container"></div>
+
+            <div id="movieContainer" class="movie-container">
+            </div>
+
             <div id="pagination" class="pagination hidden">
+
                 <button id="prevButton" type="button">
                     Previous
                 </button>
+
                 <span id="pageNumber">
                     Page 1
                 </span>
+
                 <button id="nextButton" type="button">
                     Next
                 </button>
+
             </div>
+
         </section>
 
+
+        <!-- Explore -->
+
+        <section id="exploreSection" class="explore-section">
+
+            <h2>Explore Movies</h2>
+
+            <h3>Popular Movies</h3>
+
+            <div id="popularContainer" class="movie-container">
+            </div>
+
+
+            <h3>Top Rated Movies</h3>
+
+            <div id="topRatedContainer" class="movie-container">
+            </div>
+
+        </section>
+
+
+        <!-- Movie Details -->
+
         <section id="movieDetails" class="movie-details hidden">
-            <button id="backButton" type="button" class="back-button">
-                Back to Results
-            </button>
-     
+
             <div class="details-container">
+
                 <div class="details-poster-container">
+
                     <img
                         id="detailsPoster"
                         class="details-poster"
                         alt="Movie poster"
                     >
+
                 </div>
 
+
                 <div class="details-info">
+
                     <h1 id="detailsTitle"></h1>
+
                     <div class="details-meta">
+
                         <span id="detailsYear"></span>
+
                         <span id="detailsRuntime"></span>
+
                         <span id="detailsRating"></span>
+
                     </div>
 
                     <p id="detailsGenre" class="details-genre"></p>
+
                     <p id="detailsPlot" class="details-plot"></p>
+
 
                     <div class="details-item">
                         <strong>Director</strong>
@@ -120,8 +181,11 @@
                     </div>
 
                 </div>
+
             </div>
+
         </section>
+
     </main>
 
     <script type="module" src="script.js"></script>
