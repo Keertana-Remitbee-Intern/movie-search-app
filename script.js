@@ -43,6 +43,7 @@ const header = document.querySelector("header");
 const exploreSection = document.getElementById("exploreSection");
 const popularContainer = document.getElementById("popularContainer");
 const topRatedContainer = document.getElementById("topRatedContainer");
+const genreButtons = document.querySelectorAll(".genre-button");
 
 // Search Event
 
@@ -89,6 +90,18 @@ clearButton.addEventListener("click", function () {
     clearButton.classList.add("hidden");
 
     exploreSection.classList.remove("hidden");
+});
+
+genreButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        genreButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        loadExploreMovies(button.dataset.genre);
+    });
 });
 
 // Fetch Movies
@@ -291,15 +304,34 @@ async function getMovieDetails(movieId) {
 
 // Load Explore Movies
 
-async function loadExploreMovies() {
+async function loadExploreMovies(genre = "all") {
 
     try {
 
-        const popularUrl =
-            `${API_URL}/movie/popular?api_key=${API_KEY}`;
+        let popularUrl;
+        let topRatedUrl;
 
-        const topRatedUrl =
-            `${API_URL}/movie/top_rated?api_key=${API_KEY}`;
+        if (genre === "all") {
+
+            popularUrl =
+                `${API_URL}/movie/popular?api_key=${API_KEY}`;
+
+            topRatedUrl =
+                `${API_URL}/movie/top_rated?api_key=${API_KEY}`;
+
+        } else {
+
+            popularUrl =
+                `${API_URL}/discover/movie?api_key=${API_KEY}` +
+                `&with_genres=${genre}` +
+                `&sort_by=popularity.desc`;
+
+            topRatedUrl =
+                `${API_URL}/discover/movie?api_key=${API_KEY}` +
+                `&with_genres=${genre}` +
+                `&sort_by=vote_average.desc` +
+                `&vote_count.gte=100`;
+        }
 
         const popularResponse = await fetch(popularUrl);
         const topRatedResponse = await fetch(topRatedUrl);

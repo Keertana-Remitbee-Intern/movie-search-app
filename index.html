@@ -45,7 +45,7 @@
                         id="clearButton"
                         class="clear-button hidden"
                     >
-                        Clear
+                        X
                     </button>
 
                 </form>
@@ -104,17 +104,48 @@
         </section>
 
 
-        <!-- Explore -->
-
         <section id="exploreSection" class="explore-section">
 
             <h2>Explore Movies</h2>
+
+            <div id="genreFilter" class="genre-filter">
+
+                <h3>Genre Selection</h3>
+
+                <div class="genre-buttons">
+
+                    <button type="button" class="genre-button active" data-genre="all">
+                        All
+                    </button>
+
+                    <button type="button" class="genre-button" data-genre="28">
+                        Action
+                    </button>
+
+                    <button type="button" class="genre-button" data-genre="878">
+                        Sci-Fi
+                    </button>
+
+                    <button type="button" class="genre-button" data-genre="18">
+                        Drama
+                    </button>
+
+                    <button type="button" class="genre-button" data-genre="27">
+                        Horror
+                    </button>
+
+                    <button type="button" class="genre-button" data-genre="35">
+                        Comedy
+                    </button>
+
+                </div>
+
+            </div>
 
             <h3>Popular Movies</h3>
 
             <div id="popularContainer" class="movie-container">
             </div>
-
 
             <h3>Top Rated Movies</h3>
 

@@ -449,6 +449,47 @@ header.details-mode .hero-content {
     margin-bottom: 14px;
 }
 
+.genre-filter {
+    margin-bottom: 35px;
+}
+
+.genre-filter h3 {
+    color: #aaaaaa;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}
+
+.genre-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.genre-button {
+    padding: 9px 20px;
+    color: #c8c8c8;
+    background: #181818;
+    border: 1px solid #303030;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.genre-button:hover {
+    color: #ffffff;
+    background: #242424;
+    border-color: #444444;
+}
+
+.genre-button.active {
+    color: #ffffff;
+    background: #e0b653;
+    border-color: #e0b653;
+}
+
 .explore-section > h3 {
     font-size: 20px;
     line-height: 1.2;
