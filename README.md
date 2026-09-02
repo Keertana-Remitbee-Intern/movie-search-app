@@ -16,4 +16,4 @@ CineFind is a movie search web application that allows users to discover movies,
 - CSS
 - JavaScript
 - Vite
-- [TMDB API](https://www.themoviedb.org/))
+- [TMDB API](https://www.themoviedb.org/)
